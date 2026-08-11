@@ -1,0 +1,73 @@
+{
+  "appearance": {
+    "theme": "dark",
+    "accent_color": "#8b5cf6",
+    "font_family": "Segoe UI",
+    "font_size": 13,
+    "sidebar_width": 260
+  },
+  "monitoring": {
+    "poll_interval_ms": 1000,
+    "track_idle": true,
+    "idle_timeout_seconds": 300,
+    "auto_detect_apps": true
+  },
+  "notifications": {
+    "enabled": true,
+    "sound_enabled": true,
+    "warning_threshold": 0.8,
+    "warning_interval_seconds": 300,
+    "thresholds_minutes": [
+      30,
+      15,
+      10,
+      5,
+      1
+    ],
+    "notify_on_block": true,
+    "notify_on_daily_reset": true
+  },
+  "blocking": {
+    "default_mode": "warn_then_block",
+    "grace_period_seconds": 60,
+    "default_daily_limit_seconds": 3600,
+    "default_grace_period_seconds": 60,
+    "default_block_mode": "warn_then_block",
+    "re_block_delay_seconds": 3
+  },
+  "focus": {
+    "default_duration_minutes": 25,
+    "break_duration_minutes": 5,
+    "auto_start_break": false
+  },
+  "data": {
+    "database_path": "data/opal.db",
+    "backup_dir": "data/backups",
+    "max_backups": 10,
+    "export_dir": "data/exports",
+    "log_dir": "logs",
+    "max_log_files": 10,
+    "max_log_size_mb": 5
+  },
+  "general": {
+    "start_with_windows": false,
+    "minimize_to_tray": true,
+    "start_minimized": false,
+    "check_updates": true,
+    "language": "en"
+  },
+  "behavior": {
+    "start_with_windows": false,
+    "launch_minimized": false,
+    "minimize_to_tray": true,
+    "tracking_enabled": true,
+    "polling_interval_ms": 1000,
+    "db_flush_interval_seconds": 10
+  },
+  "window": {
+    "width": 1200,
+    "height": 750,
+    "min_width": 900,
+    "min_height": 600
+  }
+}
