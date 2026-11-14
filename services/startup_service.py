@@ -1,5 +1,5 @@
 """
-Opal Desktop — Startup Service
+Limitin Desktop — Startup Service
 
 Manages Windows auto-start registration via the ``HKEY_CURRENT_USER``
 registry.  Writing to ``HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run``
@@ -21,10 +21,10 @@ logger = get_logger(__name__)
 
 
 class StartupService:
-    """Register / unregister Opal Desktop for Windows auto-start."""
+    """Register / unregister Limitin Desktop for Windows auto-start."""
 
     REGISTRY_KEY: str = r"Software\Microsoft\Windows\CurrentVersion\Run"
-    APP_NAME: str = "OpalDesktop"
+    APP_NAME: str = "LimitinDesktop"
 
     # ------------------------------------------------------------------
     # Public API
@@ -32,7 +32,7 @@ class StartupService:
 
     @staticmethod
     def is_registered() -> bool:
-        """Check whether Opal is registered to start on Windows login.
+        """Check whether Limitin is registered to start on Windows login.
 
         Returns:
             True if the registry value exists under ``HKCU\\...\\Run``.
@@ -58,7 +58,7 @@ class StartupService:
 
     @staticmethod
     def register(exe_path: Optional[str] = None) -> bool:
-        """Add Opal Desktop to Windows startup.
+        """Add Limitin Desktop to Windows startup.
 
         Writes a ``REG_SZ`` value under the ``Run`` key.  If *exe_path*
         is not provided, ``sys.executable`` is used (suitable when running
@@ -110,7 +110,7 @@ class StartupService:
 
     @staticmethod
     def unregister() -> bool:
-        """Remove Opal Desktop from Windows startup.
+        """Remove Limitin Desktop from Windows startup.
 
         Deletes the value from the ``Run`` key.  If the value does not
         exist, this is treated as success (idempotent).

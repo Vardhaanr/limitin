@@ -1,5 +1,5 @@
 """
-Opal Desktop — Dark Theme
+Limitin Desktop — Dark Theme
 
 Premium violet-accent color palette inspired by Linear, Arc Browser, and Figma.
 Every UI component references these constants for consistent styling.

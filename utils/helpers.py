@@ -1,5 +1,5 @@
 """
-Opal Desktop — General-purpose Utility Helpers
+Limitin Desktop — General-purpose Utility Helpers
 
 Formatting, path handling, icon extraction, and text manipulation
 functions used across every layer of the application.

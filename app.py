@@ -1,5 +1,5 @@
 """
-Opal Desktop — Main Application Window
+Limitin Desktop — Main Application Window
 
 The root CTk window that hosts the sidebar, page frames, background services,
 and system tray.  Created once by ``main.py`` after the splash screen finishes.
@@ -39,8 +39,8 @@ from services.tray_service import TrayService
 logger = get_logger(__name__)
 
 
-class OpalApp(ctk.CTk):
-    """Main application window for Opal Desktop.
+class LimitinApp(ctk.CTk):
+    """Main application window for Limitin Desktop.
 
     Responsibilities:
       - Hosts the sidebar navigation and page frames.
@@ -62,7 +62,7 @@ class OpalApp(ctk.CTk):
         self.db = db
 
         # ── Window chrome ────────────────────────────────────────────────────
-        self.title("Opal Desktop")
+        self.title("Limitin Desktop")
         self.configure(fg_color=BG_DARKEST)
 
         w = self.config.get("window.width", 1200)
@@ -121,7 +121,7 @@ class OpalApp(ctk.CTk):
         self.attributes("-topmost", True)
         self.after(500, lambda: self.attributes("-topmost", False))
 
-        logger.info("Opal Desktop ready")
+        logger.info("Limitin Desktop ready")
 
     # ──────────────────────────────────────────────────────────────────────────
     # Layout
@@ -353,7 +353,7 @@ class OpalApp(ctk.CTk):
 
     def _quit_app(self) -> None:
         """Full application shutdown — stop all services and exit."""
-        logger.info("Shutting down Opal Desktop...")
+        logger.info("Shutting down Limitin Desktop...")
 
         # Stop tracking
         try:

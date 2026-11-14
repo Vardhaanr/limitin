@@ -1,5 +1,5 @@
 """
-Opal Desktop — Window Detector Service
+Limitin Desktop — Window Detector Service
 
 Detects the currently focused window on Windows using Win32 APIs.
 Provides process information including executable path, PID, and window title.

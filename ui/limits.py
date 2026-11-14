@@ -1,5 +1,5 @@
 """
-Opal Desktop — Apps & Limits Page
+Limitin Desktop — Apps & Limits Page
 
 Manage monitored applications: add, edit, delete, search, sort, and configure
 daily usage limits for each app.

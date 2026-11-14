@@ -41,7 +41,7 @@
     "auto_start_break": false
   },
   "data": {
-    "database_path": "data/opal.db",
+    "database_path": "data/limitin.db",
     "backup_dir": "data/backups",
     "max_backups": 10,
     "export_dir": "data/exports",

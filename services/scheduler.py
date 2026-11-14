@@ -1,5 +1,5 @@
 """
-Opal Desktop — Scheduler Service
+Limitin Desktop — Scheduler Service
 
 Evaluates time-of-day schedule restrictions for monitored applications.
 An app with ``schedule_start`` / ``schedule_end`` set (both in "HH:MM" format)

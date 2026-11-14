@@ -1,5 +1,5 @@
 """
-Opal Desktop — Data Models
+Limitin Desktop — Data Models
 
 Dataclass definitions for all database entities. These are shared across
 services, database, and UI layers. Every table in SQLite maps to one model.

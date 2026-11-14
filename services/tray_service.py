@@ -1,5 +1,5 @@
 """
-Opal Desktop — System Tray Service
+Limitin Desktop — System Tray Service
 
 Runs a ``pystray`` system-tray icon on a dedicated daemon thread.
 The tray provides quick access to show the main window, pause/resume
@@ -94,15 +94,15 @@ class TrayService:
         menu = self._build_menu()
 
         self._icon = pystray.Icon(
-            name="OpalDesktop",
+            name="LimitinDesktop",
             icon=image,
-            title="Opal Desktop — Tracking",
+            title="Limitin Desktop — Tracking",
             menu=menu,
         )
 
         self._thread = threading.Thread(
             target=self._run_icon,
-            name="OpalTray",
+            name="LimitinTray",
             daemon=True,
         )
         self._thread.start()
@@ -150,9 +150,9 @@ class TrayService:
                 try:
                     self._icon.menu = self._build_menu()
                     if is_paused:
-                        self._icon.title = "Opal Desktop — Paused"
+                        self._icon.title = "Limitin Desktop — Paused"
                     else:
-                        self._icon.title = "Opal Desktop — Tracking"
+                        self._icon.title = "Limitin Desktop — Tracking"
                 except Exception:
                     logger.debug("Failed to update tray menu", exc_info=True)
 
@@ -174,7 +174,7 @@ class TrayService:
 
         # Show window
         items.append(
-            pystray.MenuItem("Show Opal", self._handle_show, default=True)
+            pystray.MenuItem("Show Limitin", self._handle_show, default=True)
         )
 
         items.append(pystray.Menu.SEPARATOR)
@@ -202,7 +202,7 @@ class TrayService:
     # ── Menu action handlers ──────────────────────────────────────────
 
     def _handle_show(self, icon: object, item: object) -> None:
-        """Handle 'Show Opal' menu click."""
+        """Handle 'Show Limitin' menu click."""
         if self._on_show is not None:
             try:
                 self._on_show()
@@ -244,7 +244,7 @@ class TrayService:
 
     @staticmethod
     def _create_icon_image() -> Image.Image:  # type: ignore[name-defined]
-        """Generate a 64×64 icon image with a stylised 'O' for Opal.
+        """Generate a 64×64 icon image with a stylised 'O' for Limitin.
 
         Uses the accent colour (#6366f1 — indigo) on a dark background
         to match the application's dark theme.

@@ -1,5 +1,5 @@
 """
-Opal Desktop — Database Schema Compatibility Layer
+Limitin Desktop — Database Schema Compatibility Layer
 
 Re-exports ``DatabaseManager`` as ``Database`` so that modules importing
 ``from database.schema import Database`` continue to work.

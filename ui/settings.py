@@ -1,5 +1,5 @@
 """
-Opal Desktop — Settings Page
+Limitin Desktop — Settings Page
 
 Application settings organized into sections: Appearance, Behavior,
 Notifications, Data Management, and Danger Zone.
@@ -84,7 +84,7 @@ class SettingsPage(ctk.CTkFrame):
         ).grid(row=0, column=0, sticky="w")
 
         ctk.CTkLabel(
-            header, text="Configure Opal Desktop to your preferences",
+            header, text="Configure Limitin Desktop to your preferences",
             font=font(12), text_color=TEXT_TERTIARY,
         ).grid(row=1, column=0, sticky="w", pady=(2, 0))
 
@@ -203,7 +203,7 @@ class SettingsPage(ctk.CTkFrame):
         card.grid_columnconfigure(0, weight=1)
 
         settings = [
-            ("Start with Windows", "Launch Opal automatically on login", "_startup_var"),
+            ("Start with Windows", "Launch Limitin automatically on login", "_startup_var"),
             ("Launch Minimized", "Start minimized to system tray", "_minimized_var"),
             ("Minimize to Tray", "Hide to tray when closing the window", "_tray_var"),
         ]
@@ -416,12 +416,12 @@ class SettingsPage(ctk.CTkFrame):
             return
         try:
             backup_dir = os.path.join(os.path.dirname(
-                getattr(self.db, "_db_path", getattr(self.db, "db_path", "data/opal.db"))
+                getattr(self.db, "_db_path", getattr(self.db, "db_path", "data/limitin.db"))
             ), "backups")
             os.makedirs(backup_dir, exist_ok=True)
 
             from utils.storage import backup_database
-            db_path = getattr(self.db, "_db_path", getattr(self.db, "db_path", "data/opal.db"))
+            db_path = getattr(self.db, "_db_path", getattr(self.db, "db_path", "data/limitin.db"))
             backup_path = backup_database(db_path, backup_dir)
             if backup_path:
                 self._show_info("Backup Created", f"Database backed up to:\n{backup_path}")

@@ -1,9 +1,9 @@
 # -*- mode: python ; coding: utf-8 -*-
 """
-PyInstaller spec file for Opal Desktop.
+PyInstaller spec file for Limitin Desktop.
 
 Build command:
-    pyinstaller opal.spec
+    pyinstaller limitin.spec
 
 Or with the build script:
     python build.py
@@ -69,7 +69,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name="OpalDesktop",
+    name="LimitinDesktop",
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -80,7 +80,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    # icon="assets/opal.ico",  # Uncomment if you have an icon
+    # icon="assets/limitin.ico",  # Uncomment if you have an icon
 )
 
 coll = COLLECT(
@@ -91,5 +91,5 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name="OpalDesktop",
+    name="LimitinDesktop",
 )

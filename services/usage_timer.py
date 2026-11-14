@@ -1,5 +1,5 @@
 """
-Opal Desktop — Usage Timer Service
+Limitin Desktop — Usage Timer Service
 
 Manages per-application usage counters in memory with periodic flushing to the
 database.  All access is thread-safe via a reentrant lock so the tracking loop

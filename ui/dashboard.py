@@ -1,5 +1,5 @@
 """
-Opal Desktop — Dashboard Page
+Limitin Desktop — Dashboard Page
 
 The main dashboard showing real-time usage statistics, charts, current activity,
 and a sortable list of monitored applications with progress bars.

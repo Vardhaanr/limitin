@@ -1,5 +1,5 @@
 """
-Opal Desktop — Modal Dialog Windows
+Limitin Desktop — Modal Dialog Windows
 
 Production-ready dialog collection for confirmations, application management,
 grace-period overlays, data export, and backup/restore operations. All dialogs
@@ -80,7 +80,7 @@ from themes.dark_theme import (
 from database.models import Application
 from ui.widgets import TimePicker
 
-logger = logging.getLogger("opal.ui.dialogs")
+logger = logging.getLogger("limitin.ui.dialogs")
 
 
 # ── Helper: center a toplevel on its parent ──────────────────────────────────

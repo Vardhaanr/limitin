@@ -1,1 +1,1 @@
-# Opal Desktop — UI Package
+# Limitin Desktop — UI Package

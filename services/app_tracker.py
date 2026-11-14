@@ -1,5 +1,5 @@
 """
-Opal Desktop — App Tracker (Orchestrator)
+Limitin Desktop — App Tracker (Orchestrator)
 
 The central tracking service that ties together window detection, usage
 counting, and limit enforcement.  Runs a 1-second polling loop on a
@@ -100,7 +100,7 @@ class AppTracker:
 
         self._thread = threading.Thread(
             target=self._tracking_loop,
-            name="OpalTracker",
+            name="LimitinTracker",
             daemon=True,
         )
         self._thread.start()

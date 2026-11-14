@@ -1,5 +1,5 @@
 """
-Opal Desktop — Reusable Widget Components
+Limitin Desktop — Reusable Widget Components
 
 Production-ready widget library used across all pages. Each widget is a
 self-contained class that follows the dark theme and handles its own layout,
@@ -71,7 +71,7 @@ from themes.dark_theme import (
 )
 from database.models import Application
 
-logger = logging.getLogger("opal.ui.widgets")
+logger = logging.getLogger("limitin.ui.widgets")
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────

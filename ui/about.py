@@ -1,5 +1,5 @@
 """
-Opal Desktop — About Page
+Limitin Desktop — About Page
 
 Displays application information, version, system details, and credits.
 """
@@ -29,7 +29,7 @@ if TYPE_CHECKING:
     from services.app_tracker import AppTracker
 
 VERSION = "1.0.0"
-APP_NAME = "Opal Desktop"
+APP_NAME = "Limitin Desktop"
 DESCRIPTION = (
     "Digital wellness for Windows. Monitor, limit, and take control "
     "of your screen time with precision tracking and intelligent blocking."

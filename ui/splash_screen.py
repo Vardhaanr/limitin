@@ -1,8 +1,8 @@
 """
-Opal Desktop — Splash Screen
+Limitin Desktop — Splash Screen
 
 Borderless loading screen shown during application startup.
-Displays the Opal logo, a loading bar, and status messages while
+Displays the Limitin logo, a loading bar, and status messages while
 the database and services are being initialized.
 """
 
@@ -68,7 +68,7 @@ class SplashScreen(ctk.CTkToplevel):
 
         # ── App name ─────────────────────────────────────────────────
         ctk.CTkLabel(
-            container, text="Opal",
+            container, text="Limitin",
             font=font_bold(32), text_color=ACCENT_LIGHT,
         ).pack(pady=(0, 4))
 

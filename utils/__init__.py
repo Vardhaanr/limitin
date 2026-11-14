@@ -1,1 +1,1 @@
-# Opal Desktop — Utilities Package
+# Limitin Desktop — Utilities Package

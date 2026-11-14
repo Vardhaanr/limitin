@@ -1,5 +1,5 @@
 """
-Opal Desktop — Build Script
+Limitin Desktop — Build Script
 
 Builds the application into a distributable .exe using PyInstaller.
 
@@ -7,7 +7,7 @@ Usage:
     python build.py
 
 Output:
-    dist/OpalDesktop/OpalDesktop.exe
+    dist/LimitinDesktop/LimitinDesktop.exe
 """
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ import sys
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DIST_DIR = os.path.join(ROOT, "dist")
 BUILD_DIR = os.path.join(ROOT, "build")
-SPEC_FILE = os.path.join(ROOT, "opal.spec")
+SPEC_FILE = os.path.join(ROOT, "limitin.spec")
 
 
 def clean() -> None:
@@ -49,9 +49,9 @@ def build() -> None:
 
 def post_build() -> None:
     """Copy config files and create required directories in the dist."""
-    dist_app = os.path.join(DIST_DIR, "OpalDesktop")
+    dist_app = os.path.join(DIST_DIR, "LimitinDesktop")
     if not os.path.isdir(dist_app):
-        print("  WARNING: dist/OpalDesktop not found — skipping post-build")
+        print("  WARNING: dist/LimitinDesktop not found — skipping post-build")
         return
 
     # Ensure the data and logs directories exist
@@ -72,7 +72,7 @@ def post_build() -> None:
 def main() -> None:
     """Run the full build pipeline."""
     print("=" * 60)
-    print("  Opal Desktop — Build")
+    print("  Limitin Desktop — Build")
     print("=" * 60)
 
     print("\n[1/3] Cleaning previous builds...")
@@ -84,7 +84,7 @@ def main() -> None:
     print("\n[3/3] Post-build setup...")
     post_build()
 
-    exe_path = os.path.join(DIST_DIR, "OpalDesktop", "OpalDesktop.exe")
+    exe_path = os.path.join(DIST_DIR, "LimitinDesktop", "LimitinDesktop.exe")
     if os.path.isfile(exe_path):
         print(f"\n  BUILD SUCCESSFUL")
         print(f"  Output: {exe_path}")

@@ -1,1 +1,1 @@
-# Opal Desktop — Themes Package
+# Limitin Desktop — Themes Package

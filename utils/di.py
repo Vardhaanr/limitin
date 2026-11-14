@@ -83,7 +83,7 @@ def initialize_services():
     """Initialize and register all core services."""
     from database.schema import Database, get_database
     from services.settings import SettingsManager, get_settings
-    from services.logger import OpalLogger, get_logger
+    from services.logger import LimitinLogger, get_logger
     from services.state import StateManager, get_state_manager
     from core.background import BackgroundService, UIUpdateScheduler, \
         get_background_service, get_ui_scheduler
@@ -93,7 +93,7 @@ def initialize_services():
     # Register core services
     locator.register(Database, get_database())
     locator.register(SettingsManager, get_settings())
-    locator.register(OpalLogger, get_logger())
+    locator.register(LimitinLogger, get_logger())
     locator.register(StateManager, get_state_manager())
     locator.register(BackgroundService, get_background_service())
     locator.register(UIUpdateScheduler, get_ui_scheduler())

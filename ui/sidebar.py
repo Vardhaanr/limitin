@@ -1,5 +1,5 @@
 """
-Opal Desktop — Sidebar Navigation Panel
+Limitin Desktop — Sidebar Navigation Panel
 
 The left-hand sidebar providing navigation between all application pages,
 branding, and a real-time tracking status indicator.
@@ -52,7 +52,7 @@ from themes.dark_theme import (
 )
 from ui.widgets import SidebarButton
 
-logger = logging.getLogger("opal.ui.sidebar")
+logger = logging.getLogger("limitin.ui.sidebar")
 
 # ── Navigation Definition ────────────────────────────────────────────────────
 
@@ -74,7 +74,7 @@ _APP_VERSION = "v0.1.0"
 
 
 class Sidebar(ctk.CTkFrame):
-    """Left navigation sidebar for Opal Desktop.
+    """Left navigation sidebar for Limitin Desktop.
 
     Renders a fixed-width panel with branding at the top, navigation buttons
     in the middle, a separator, secondary nav items, and a tracking status
@@ -124,7 +124,7 @@ class Sidebar(ctk.CTkFrame):
 
         logo_label = ctk.CTkLabel(
             logo_frame,
-            text="Opal",
+            text="Limitin",
             font=font_bold(22),
             text_color=ACCENT_LIGHT,
             anchor="w",

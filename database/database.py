@@ -1,12 +1,12 @@
 """
-Opal Desktop — SQLite Database Manager
+Limitin Desktop — SQLite Database Manager
 
 Thread-safe, WAL-mode SQLite database with parameterised queries,
 automatic schema creation, and migration support.
 
 Usage:
     from database.database import DatabaseManager
-    db = DatabaseManager("data/opal.db")
+    db = DatabaseManager("data/limitin.db")
     app_id = db.add_application(app)
     usage  = db.get_usage_today(app_id)
 """
@@ -37,7 +37,7 @@ _SCHEMA_VERSION: int = 1
 
 
 class DatabaseManager:
-    """Thread-safe SQLite database manager for Opal Desktop.
+    """Thread-safe SQLite database manager for Limitin Desktop.
 
     All write operations are serialised through a :class:`threading.Lock`
     so the database can be shared across monitoring threads and the UI
@@ -52,7 +52,7 @@ class DatabaseManager:
     # Construction / setup
     # ------------------------------------------------------------------
 
-    def __init__(self, db_path: str = "data/opal.db") -> None:
+    def __init__(self, db_path: str = "data/limitin.db") -> None:
         if not os.path.isabs(db_path):
             app_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
             db_path = os.path.join(app_root, db_path)

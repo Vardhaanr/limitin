@@ -1,5 +1,5 @@
 """
-Opal Desktop — Statistics Page
+Limitin Desktop — Statistics Page
 
 Displays analytical charts and tables: summary cards, bar/pie charts,
 hour-of-day heatmap, and a ranked top apps table. Time range is selectable.
@@ -452,7 +452,7 @@ class StatisticsPage(ctk.CTkFrame):
 
         # Use a purple colormap
         from matplotlib.colors import LinearSegmentedColormap
-        cmap = LinearSegmentedColormap.from_list("opal", [BG_CARD, ACCENT_MUTED, ACCENT, ACCENT_LIGHT])
+        cmap = LinearSegmentedColormap.from_list("limitin", [BG_CARD, ACCENT_MUTED, ACCENT, ACCENT_LIGHT])
 
         im = self._ax_heat.imshow(grid, aspect="auto", cmap=cmap, interpolation="nearest")
         self._ax_heat.set_yticks(range(7))

@@ -1,5 +1,5 @@
 """
-Opal Desktop — Configuration Management & Data Import/Export
+Limitin Desktop — Configuration Management & Data Import/Export
 
 Provides:
   - ``ConfigManager``:  JSON-based configuration with dot-path access,
@@ -66,7 +66,7 @@ _DEFAULT_CONFIG: dict[str, Any] = {
         "auto_start_break": False,
     },
     "data": {
-        "database_path": "data/opal.db",
+        "database_path": "data/limitin.db",
         "backup_dir": "data/backups",
         "max_backups": 10,
         "export_dir": "data/exports",
@@ -157,7 +157,7 @@ class ConfigManager:
         try:
             fd, tmp_path = tempfile.mkstemp(
                 suffix=".json",
-                prefix=".opal_config_",
+                prefix=".limitin_config_",
                 dir=config_dir,
             )
             try:
@@ -352,7 +352,7 @@ def backup_database(db_path: str, backup_dir: str) -> str:
     os.makedirs(backup_dir, exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    backup_name = f"opal_backup_{timestamp}.db"
+    backup_name = f"limitin_backup_{timestamp}.db"
     backup_path = os.path.join(backup_dir, backup_name)
 
     try:

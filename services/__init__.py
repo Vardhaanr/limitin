@@ -1,1 +1,1 @@
-# Opal Desktop — Services Package
+# Limitin Desktop — Services Package

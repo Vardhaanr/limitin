@@ -1,5 +1,5 @@
 """
-Opal Desktop — Centralized Logging
+Limitin Desktop — Centralized Logging
 
 Provides rotating file handler + console output with configurable levels.
 File logs capture DEBUG+, console shows INFO+ (with color when supported).
@@ -87,8 +87,8 @@ def _supports_color() -> bool:
 
 
 def _build_log_filename() -> str:
-    """Return the log filename for the current day, e.g. ``opal_2026-07-07.log``."""
-    return f"opal_{datetime.now().strftime('%Y-%m-%d')}.log"
+    """Return the log filename for the current day, e.g. ``limitin_2026-07-07.log``."""
+    return f"limitin_{datetime.now().strftime('%Y-%m-%d')}.log"
 
 
 # ---------------------------------------------------------------------------
@@ -146,7 +146,7 @@ def setup_logging(
     except OSError as exc:
         # If we cannot write to the log directory, emit a warning to stderr
         # but do not crash the application.
-        sys.stderr.write(f"[Opal] Unable to create log file at {log_path}: {exc}\n")
+        sys.stderr.write(f"[Limitin] Unable to create log file at {log_path}: {exc}\n")
 
     # ------------------------------------------------------------------
     # Console handler — INFO level, coloured if supported

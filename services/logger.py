@@ -1,5 +1,5 @@
 """
-Opal Desktop — Services Logger Compatibility Layer
+Limitin Desktop — Services Logger Compatibility Layer
 
 Re-exports ``get_logger`` from :mod:`utils.logger` so that modules importing
 ``from services.logger import get_logger`` continue to work.

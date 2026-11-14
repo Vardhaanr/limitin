@@ -1,5 +1,5 @@
 """
-Opal Desktop — Focus Mode Page
+Limitin Desktop — Focus Mode Page
 
 Allows users to start timed focus sessions that block selected apps.
 Features a visual countdown timer, app selector, duration presets,

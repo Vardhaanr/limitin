@@ -1,1 +1,1 @@
-# Opal Desktop — Database Package
+# Limitin Desktop — Database Package

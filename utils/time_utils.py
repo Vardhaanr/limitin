@@ -1,5 +1,5 @@
 """
-Opal Desktop — Time Utilities
+Limitin Desktop — Time Utilities
 
 Pure date/time helpers used throughout the application.  All functions
 return deterministic results based on the current clock, and they

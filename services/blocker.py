@@ -1,5 +1,5 @@
 """
-Opal Desktop — Blocker Service
+Limitin Desktop — Blocker Service
 
 Enforces application time limits by terminating processes when their daily
 usage quota is exhausted.  Supports a configurable grace period during which

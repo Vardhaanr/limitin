@@ -1,5 +1,5 @@
 """
-Opal Desktop — Notification Service
+Limitin Desktop — Notification Service
 
 Sends Windows toast notifications for usage warnings, limit enforcement, and
 focus-mode events.
@@ -53,7 +53,7 @@ _THRESHOLDS: list[tuple[int, str]] = [
 
 
 class NotificationService:
-    """Manages and dispatches desktop notifications for Opal events.
+    """Manages and dispatches desktop notifications for Limitin events.
 
     Tracks which notifications have already been sent for the current day
     to avoid spamming the user with duplicate alerts.
@@ -78,7 +78,7 @@ class NotificationService:
 
         if _USE_WINDOWS_TOASTS:
             try:
-                self._toaster: Optional[WindowsToaster] = WindowsToaster("Opal Desktop")
+                self._toaster: Optional[WindowsToaster] = WindowsToaster("Limitin Desktop")
             except Exception:
                 self._toaster = None
                 logger.debug("Failed to create WindowsToaster", exc_info=True)
@@ -236,7 +236,7 @@ class NotificationService:
                 _plyer_notification.notify(
                     title=title,
                     message=message,
-                    app_name="Opal Desktop",
+                    app_name="Limitin Desktop",
                     timeout=8,
                 )
                 return
@@ -283,7 +283,7 @@ class NotificationService:
             except Exception:
                 logger.debug("Tkinter fallback notification failed", exc_info=True)
 
-        thread = threading.Thread(target=_show, daemon=True, name="OpalNotify")
+        thread = threading.Thread(target=_show, daemon=True, name="LimitinNotify")
         thread.start()
 
     # ------------------------------------------------------------------

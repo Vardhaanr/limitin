@@ -1,5 +1,5 @@
 """
-Opal Desktop — History Page
+Limitin Desktop — History Page
 
 Usage history timeline with day-by-day navigation, daily summaries,
 per-app usage breakdown, and blocked events log.
