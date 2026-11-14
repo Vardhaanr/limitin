@@ -1,1 +1,0 @@
-# Opal Desktop — Themes Package
