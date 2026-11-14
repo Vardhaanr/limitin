@@ -224,7 +224,16 @@ class OpalApp(ctk.CTk):
         self.notification_service.notify_app_blocked(app_name)
 
     def _on_grace_period(self, app_id: int, seconds_remaining: int) -> None:
-        """Called by Blocker when a grace period starts."""
+        """Called by Blocker during grace period — only creates overlay once."""
+        # Skip if an overlay is already showing (prevents blinking)
+        if self._grace_overlay is not None:
+            try:
+                if self._grace_overlay.winfo_exists():
+                    return
+            except Exception:
+                pass
+            self._grace_overlay = None
+
         logger.info("Grace period for app_id=%d: %ds", app_id, seconds_remaining)
 
         # Get the app info
@@ -236,13 +245,14 @@ class OpalApp(ctk.CTk):
         self.after(0, lambda: self._show_grace_overlay(app, seconds_remaining))
 
     def _show_grace_overlay(self, app, seconds_remaining: int) -> None:
-        """Display the grace period countdown overlay."""
+        """Display the grace period countdown overlay — created only once."""
         from ui.dialogs import GracePeriodOverlay
 
-        # Close existing overlay if any
+        # Don't recreate if one already exists
         if self._grace_overlay is not None:
             try:
-                self._grace_overlay.destroy()
+                if self._grace_overlay.winfo_exists():
+                    return
             except Exception:
                 pass
 
@@ -255,7 +265,31 @@ class OpalApp(ctk.CTk):
                     pass
                 self._grace_overlay = None
 
-        def on_dismiss():
+        def on_extend(extra_minutes: int):
+            """Extend the app's daily limit by the requested minutes."""
+            if extra_minutes > 0 and app.id is not None:
+                extra_seconds = extra_minutes * 60
+                try:
+                    # Extend the daily limit in the database
+                    self.db.execute(
+                        "UPDATE applications SET daily_limit_seconds = daily_limit_seconds + ? WHERE id = ?",
+                        (extra_seconds, app.id),
+                    )
+                    # Remove from blocked set and clear grace period
+                    with self.tracker.blocker._lock:
+                        self.tracker.blocker._blocked_apps.discard(app.id)
+                        self.tracker.blocker._grace_periods.pop(app.id, None)
+                    # Refresh the tracker's cached app list
+                    self.tracker._refresh_monitored_apps()
+                    # Reset the usage for this app to 0 so the extended time starts fresh
+                    self.tracker.timer._reset_usage(app.id)
+                    logger.info(
+                        "Extended limit for '%s' by %d min (new limit: %ds)",
+                        app.name, extra_minutes,
+                        app.daily_limit_seconds + extra_seconds,
+                    )
+                except Exception:
+                    logger.exception("Failed to extend limit for '%s'", app.name)
             if self._grace_overlay:
                 try:
                     self._grace_overlay.destroy()
@@ -266,7 +300,7 @@ class OpalApp(ctk.CTk):
         self._grace_overlay = GracePeriodOverlay(
             self, app.name, seconds_remaining,
             on_close_app=on_close_app,
-            on_dismiss=on_dismiss,
+            on_extend=on_extend,
         )
 
     # ──────────────────────────────────────────────────────────────────────────

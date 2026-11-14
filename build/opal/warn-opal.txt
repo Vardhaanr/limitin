@@ -47,6 +47,7 @@ missing module named 'numpy_distutils.fcompiler' - imported by numpy.f2py.diagno
 missing module named 'numpy_distutils.command' - imported by numpy.f2py.diagnose (delayed, conditional, optional)
 missing module named numpy_distutils - imported by numpy.f2py.diagnose (delayed, optional)
 missing module named asyncio.DefaultEventLoopPolicy - imported by asyncio (delayed, conditional), asyncio.events (delayed, conditional)
+missing module named annotationlib - imported by typing_extensions (conditional)
 missing module named readline - imported by cmd (delayed, conditional, optional), code (delayed, conditional, optional), pdb (delayed, optional)
 missing module named 'unittest.case' - imported by numpy.testing._private.utils (top-level)
 excluded module named unittest - imported by numpy.testing (top-level), doctest (top-level), numpy.testing._private.utils (top-level), tornado.util (conditional), tornado.httputil (conditional)

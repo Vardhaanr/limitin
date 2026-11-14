@@ -241,6 +241,19 @@ class UsageTimer:
         with self._lock:
             self._counters[app_id] = max(0, seconds)
 
+    def _reset_usage(self, app_id: int) -> None:
+        """Reset the usage counter for a specific app to 0.
+
+        Used when extending time limits to give the user a fresh start.
+
+        Args:
+            app_id: The application's database ID.
+        """
+        with self._lock:
+            self._counters[app_id] = 0
+            self._pending[app_id] = 0
+        logger.debug("Reset usage counter for app_id=%d", app_id)
+
     @property
     def current_date(self) -> str:
         """The ISO-format date string the counters are tracking."""

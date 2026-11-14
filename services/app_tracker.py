@@ -270,19 +270,32 @@ class AppTracker:
                 self._update_active_app(matched_app)
 
                 if matched_app is not None and matched_app.id is not None:
-                    # Tick usage
-                    usage: int = self._timer.tick(matched_app.id)
-
-                    # 6) Check limits
-                    action: str = self._blocker.check_and_block(
-                        matched_app.id, usage, matched_app
-                    )
-                    if action in ("blocked", "already_blocked"):
-                        # Clear active app since it was terminated
+                    # Skip ticking if the app is already blocked
+                    if self._blocker.is_blocked(matched_app.id):
+                        # Re-terminate in case user reopened it
+                        self._blocker.check_and_block(
+                            matched_app.id,
+                            self._timer.get_usage(matched_app.id),
+                            matched_app,
+                        )
                         with self._lock:
                             self._current_app_name = None
                             self._current_app_id = None
                             self._current_session_start = 0.0
+                    else:
+                        # Tick usage only if not blocked
+                        usage: int = self._timer.tick(matched_app.id)
+
+                        # 6) Check limits
+                        action: str = self._blocker.check_and_block(
+                            matched_app.id, usage, matched_app
+                        )
+                        if action in ("blocked", "already_blocked"):
+                            # Clear active app since it was terminated
+                            with self._lock:
+                                self._current_app_name = None
+                                self._current_app_id = None
+                                self._current_session_start = 0.0
 
                 # 7) Periodic flush
                 self._flush_counter += 1

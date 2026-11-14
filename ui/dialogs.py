@@ -1132,13 +1132,18 @@ class GracePeriodOverlay(ctk.CTkToplevel):
     that ticks every second. When the countdown reaches zero, the
     on_close_app callback is fired automatically.
 
+    The 'I need more time' button shows a minute picker so the user can
+    extend their daily limit. The popup is a true modal — it cannot be
+    dismissed without selecting an option.
+
     Args:
         master: Parent widget.
         app_name: Name of the application about to be blocked.
         seconds: Initial countdown duration in seconds.
         on_close_app: Callback invoked when the countdown reaches zero or
                       when the user clicks 'Close App Now'.
-        on_dismiss: Callback invoked when the user requests more time.
+        on_extend: Callback(extra_minutes: int) invoked when the user
+                   selects an extension duration.
     """
 
     def __init__(
@@ -1147,17 +1152,18 @@ class GracePeriodOverlay(ctk.CTkToplevel):
         app_name: str,
         seconds: int,
         on_close_app: callable,
-        on_dismiss: callable,
+        on_extend: callable,
     ) -> None:
         super().__init__(master)
 
         self._app_name = app_name
         self._remaining = max(1, seconds)
         self._on_close_app = on_close_app
-        self._on_dismiss = on_dismiss
+        self._on_extend = on_extend
         self._timer_id: str | None = None
         self._pulse_id: str | None = None
         self._pulse_step: int = 0
+        self._showing_picker: bool = False
 
         # ── Window configuration ─────────────────────────────────────────
         self.title("Time Limit Warning")
@@ -1166,7 +1172,7 @@ class GracePeriodOverlay(ctk.CTkToplevel):
         self.attributes("-topmost", True)
         self.overrideredirect(False)
 
-        dialog_width, dialog_height = 440, 380
+        dialog_width, dialog_height = 440, 520
         _center_on_parent(self, dialog_width, dialog_height)
 
         try:
@@ -1177,14 +1183,14 @@ class GracePeriodOverlay(ctk.CTkToplevel):
             logger.debug("Could not set overlay as modal")
 
         # ── Content ──────────────────────────────────────────────────────
-        content = ctk.CTkFrame(self, fg_color=BG_DARKEST)
-        content.pack(fill="both", expand=True, padx=PAD_2XL, pady=PAD_2XL)
-        content.grid_columnconfigure(0, weight=1)
+        self._content = ctk.CTkFrame(self, fg_color=BG_DARKEST)
+        self._content.pack(fill="both", expand=True, padx=PAD_2XL, pady=PAD_2XL)
+        self._content.grid_columnconfigure(0, weight=1)
 
         # Warning icon
         warning_label = ctk.CTkLabel(
-            content,
-            text=ICONS.get("warning", "⚠"),
+            self._content,
+            text=ICONS.get("warning", "!"),
             font=font(48),
             text_color=RED,
             fg_color="transparent",
@@ -1193,7 +1199,7 @@ class GracePeriodOverlay(ctk.CTkToplevel):
 
         # Title
         title_label = ctk.CTkLabel(
-            content,
+            self._content,
             text="Time Limit Reached",
             font=FONT_HEADING,
             text_color=RED_LIGHT,
@@ -1203,7 +1209,7 @@ class GracePeriodOverlay(ctk.CTkToplevel):
 
         # App name
         app_label = ctk.CTkLabel(
-            content,
+            self._content,
             text=app_name,
             font=FONT_BODY_BOLD,
             text_color=TEXT_PRIMARY,
@@ -1213,7 +1219,7 @@ class GracePeriodOverlay(ctk.CTkToplevel):
 
         # Countdown timer — large, dramatic
         self._countdown_label = ctk.CTkLabel(
-            content,
+            self._content,
             text=self._format_countdown(self._remaining),
             font=font_bold(56),
             text_color=RED,
@@ -1223,7 +1229,7 @@ class GracePeriodOverlay(ctk.CTkToplevel):
 
         # Countdown message
         self._message_label = ctk.CTkLabel(
-            content,
+            self._content,
             text=f"{app_name} will be closed when the timer reaches zero.",
             font=FONT_SMALL,
             text_color=TEXT_SECONDARY,
@@ -1232,28 +1238,71 @@ class GracePeriodOverlay(ctk.CTkToplevel):
         )
         self._message_label.grid(row=4, column=0, pady=(0, PAD_XL))
 
-        # ── Buttons ──────────────────────────────────────────────────────
-        btn_frame = ctk.CTkFrame(content, fg_color="transparent")
-        btn_frame.grid(row=5, column=0)
+        # ── Buttons frame ────────────────────────────────────────────────
+        self._btn_frame = ctk.CTkFrame(self._content, fg_color="transparent")
+        self._btn_frame.grid(row=5, column=0)
 
-        dismiss_btn = ctk.CTkButton(
-            btn_frame,
+        self._extend_btn = ctk.CTkButton(
+            self._btn_frame,
             text="I need more time",
-            command=self._handle_dismiss,
+            command=self._show_time_picker,
             **STYLE_BUTTON_SECONDARY,
         )
-        dismiss_btn.pack(side="left", padx=(0, PAD_SM))
+        self._extend_btn.pack(side="left", padx=(0, PAD_SM))
 
         close_btn = ctk.CTkButton(
-            btn_frame,
+            self._btn_frame,
             text="Close App Now",
             command=self._handle_close_app,
             **STYLE_BUTTON_DANGER,
         )
         close_btn.pack(side="left")
 
-        # Prevent closing via 'X'
-        self.protocol("WM_DELETE_WINDOW", self._handle_dismiss)
+        # ── Time picker frame (hidden initially) ─────────────────────────
+        self._picker_frame = ctk.CTkFrame(self._content, fg_color=BG_CARD, corner_radius=CARD_CORNER_RADIUS)
+
+        ctk.CTkLabel(
+            self._picker_frame,
+            text="How much more time do you need?",
+            font=FONT_SMALL_BOLD,
+            text_color=TEXT_PRIMARY,
+            fg_color="transparent",
+        ).pack(pady=(PAD_MD, PAD_SM))
+
+        minutes_row = ctk.CTkFrame(self._picker_frame, fg_color="transparent")
+        minutes_row.pack(pady=(0, PAD_MD))
+
+        for mins in [1, 5, 10, 15, 30]:
+            ctk.CTkButton(
+                minutes_row,
+                text=f"{mins} min",
+                width=60,
+                height=32,
+                font=FONT_SMALL_BOLD,
+                fg_color=ACCENT_SURFACE,
+                hover_color=ACCENT_MUTED,
+                text_color=ACCENT_LIGHT,
+                corner_radius=BUTTON_CORNER_RADIUS,
+                command=lambda m=mins: self._handle_extend(m),
+            ).pack(side="left", padx=PAD_XS)
+
+        # Back button in picker
+        ctk.CTkButton(
+            self._picker_frame,
+            text="Back",
+            width=60,
+            height=28,
+            font=FONT_SMALL,
+            fg_color="transparent",
+            hover_color=BG_CARD_HOVER,
+            text_color=TEXT_TERTIARY,
+            corner_radius=BUTTON_CORNER_RADIUS,
+            command=self._hide_time_picker,
+        ).pack(pady=(0, PAD_SM))
+
+        # Prevent closing via 'X' or Escape — must choose an option
+        self.protocol("WM_DELETE_WINDOW", lambda: None)
+        self.bind("<Escape>", lambda _e: None)
 
         # ── Start countdown and pulse ────────────────────────────────────
         self._start_countdown()
@@ -1265,17 +1314,33 @@ class GracePeriodOverlay(ctk.CTkToplevel):
             seconds,
         )
 
+    # ── Time picker toggle ───────────────────────────────────────────────
+
+    def _show_time_picker(self) -> None:
+        """Show the minute selection buttons."""
+        self._showing_picker = True
+        self._btn_frame.grid_forget()
+        self._picker_frame.grid(row=5, column=0, sticky="ew", padx=PAD_SM, pady=(0, PAD_SM))
+
+    def _hide_time_picker(self) -> None:
+        """Hide the minute picker, show original buttons."""
+        self._showing_picker = False
+        self._picker_frame.grid_forget()
+        self._btn_frame.grid(row=5, column=0)
+
+    def _handle_extend(self, minutes: int) -> None:
+        """User selected an extension duration."""
+        self._cancel_timers()
+        try:
+            self._on_extend(minutes)
+        except Exception:
+            logger.exception("Error in on_extend callback")
+        # The callback handles destroying the overlay
+
     # ── Countdown ────────────────────────────────────────────────────────
 
     def _format_countdown(self, seconds: int) -> str:
-        """Format seconds as MM:SS.
-
-        Args:
-            seconds: Remaining seconds.
-
-        Returns:
-            Formatted string like '01:30'.
-        """
+        """Format seconds as MM:SS."""
         m, s = divmod(max(0, seconds), 60)
         return f"{m:02d}:{s:02d}"
 
@@ -1314,18 +1379,12 @@ class GracePeriodOverlay(ctk.CTkToplevel):
         self._pulse()
 
     def _pulse(self) -> None:
-        """Alternate the countdown opacity/scale for a pulsing effect.
-
-        Uses font size oscillation between the normal and slightly larger
-        sizes to simulate pulsing since tkinter doesn't support opacity
-        on individual labels.
-        """
+        """Alternate the countdown font size for a subtle pulse effect."""
         try:
             if not self.winfo_exists():
                 return
 
             self._pulse_step = (self._pulse_step + 1) % 2
-            # Alternate between two font sizes for a subtle pulse
             size = 56 if self._pulse_step == 0 else 58
             self._countdown_label.configure(font=font_bold(size))
             self._pulse_id = self.after(800, self._pulse)
@@ -1341,19 +1400,6 @@ class GracePeriodOverlay(ctk.CTkToplevel):
             self._on_close_app()
         except Exception:
             logger.exception("Error in on_close_app callback")
-        finally:
-            try:
-                self.destroy()
-            except Exception:
-                pass
-
-    def _handle_dismiss(self) -> None:
-        """User requests more time — invoke dismiss callback."""
-        self._cancel_timers()
-        try:
-            self._on_dismiss()
-        except Exception:
-            logger.exception("Error in on_dismiss callback")
         finally:
             try:
                 self.destroy()
